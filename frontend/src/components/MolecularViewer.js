@@ -46,6 +46,81 @@ const MolecularViewer = ({ pdbData, style, darkMode }) => {
   useEffect(() => {
     if (!pdbData || !viewerRef.current) return;
 
+    const applyViewerStyle = (viewer) => {
+      viewer.setStyle({}, {});
+
+      switch (proteinStyle) {
+        case 'cartoon':
+          viewer.setStyle({}, {
+            cartoon: {
+              color: getColorSchemeValue(),
+              thickness: 1.0
+            }
+          });
+          break;
+        case 'ribbon':
+          viewer.setStyle({}, {
+            cartoon: {
+              color: getColorSchemeValue(),
+              thickness: 0.5,
+              style: 'trace'
+            }
+          });
+          break;
+        case 'line':
+          viewer.setStyle({}, {
+            line: {
+              color: getColorSchemeValue(),
+              linewidth: 2
+            }
+          });
+          break;
+        case 'sphere':
+          viewer.setStyle({}, {
+            sphere: {
+              color: getColorSchemeValue(),
+              scale: 0.2
+            }
+          });
+          break;
+        default:
+          viewer.setStyle({}, {
+            cartoon: {
+              color: getColorSchemeValue(),
+              thickness: 1.0
+            }
+          });
+      }
+
+      // Apply ligand style
+      if (showLigands) {
+        viewer.setStyle({ resn: 'LIG' }, { stick: { colorscheme: 'greenCarbon' } });
+      }
+
+      // Apply surface
+      if (showSurface) {
+        viewer.addSurface(window.$3Dmol.SurfaceType.VDW, {
+          opacity: 0.7,
+          color: 'white'
+        }, {});
+      }
+    };
+
+    const getColorSchemeValue = () => {
+      switch (colorScheme) {
+        case 'ss':
+          return 'sstruc';
+        case 'chain':
+          return 'chain';
+        case 'residue':
+          return 'residue';
+        case 'atom':
+          return 'element';
+        default:
+          return 'ss';
+      }
+    };
+
     const initViewer = async () => {
       try {
         setLoading(true);
@@ -93,127 +168,6 @@ const MolecularViewer = ({ pdbData, style, darkMode }) => {
       }
     };
   }, [pdbData, darkMode, proteinStyle, currentStyle, showSurface, showLigands, colorScheme]);
-
-  const applyViewerStyle = (viewer) => {
-    viewer.setStyle({}, {});
-
-    switch (proteinStyle) {
-      case 'cartoon':
-        viewer.setStyle({}, {
-          cartoon: {
-            color: getColorSchemeValue(),
-            thickness: 1.0
-          }
-        });
-        break;
-      case 'ribbon':
-        viewer.setStyle({}, {
-          cartoon: {
-            color: getColorSchemeValue(),
-            thickness: 0.5,
-            style: 'trace'
-          }
-        });
-        break;
-      case 'line':
-        viewer.setStyle({}, {
-          line: {
-            color: getColorSchemeValue(),
-            linewidth: 2
-          }
-        });
-        break;
-      case 'sphere':
-        viewer.setStyle({}, {
-          sphere: {
-            color: getColorSchemeValue(),
-            radius: 0.3
-          }
-        });
-        break;
-      default:
-        viewer.setStyle({}, {
-          cartoon: {
-            color: getColorSchemeValue()
-          }
-        });
-    }
-
-    if (showLigands) {
-      viewer.setStyle({hetflag: true}, getLigandStyle());
-    }
-
-    if (showSurface) {
-      viewer.addSurface(window.$3Dmol.SurfaceType.VDW, {
-        opacity: 0.7,
-        colorscheme: getColorSchemeValue()
-      }, {hetflag: true}, {});
-    }
-
-    viewer.render();
-  };
-
-  const getColorSchemeValue = () => {
-    switch (colorScheme) {
-      case 'green':
-        return 'greenCarbon';
-      case 'cyan':
-        return 'cyanCarbon';
-      case 'magenta':
-        return 'magentaCarbon';
-      case 'yellow':
-        return 'yellowCarbon';
-      case 'white':
-        return 'whiteCarbon';
-      case 'ss':
-        return 'ss';
-      case 'chain':
-        return 'chain';
-      case 'b':
-        return 'b';
-      case 'residue':
-        return 'residue';
-      default:
-        return 'spectrum';
-    }
-  };
-
-  const getLigandStyle = () => {
-    switch (currentStyle) {
-      case 'sphere':
-        return {
-          sphere: {
-            colorscheme: 'greenCarbon',
-            radius: 0.3,
-            opacity: 0.8
-          }
-        };
-      case 'stick':
-        return {
-          stick: {
-            colorscheme: 'greenCarbon',
-            radius: 0.15,
-            opacity: 0.9
-          }
-        };
-      case 'line':
-        return {
-          line: {
-            colorscheme: 'greenCarbon',
-            linewidth: 2,
-            opacity: 0.8
-          }
-        };
-      default:
-        return {
-          stick: {
-            colorscheme: 'greenCarbon',
-            radius: 0.15,
-            opacity: 0.9
-          }
-        };
-    }
-  };
 
   const handleStyleChange = (newStyle) => {
     if (!viewerInstance.current) return;

@@ -7,13 +7,11 @@ import {
   Button,
   Alert,
   Box,
-  Divider,
   CircularProgress,
   Fade,
   Slide,
   IconButton,
   Tooltip,
-  useTheme,
   alpha
 } from '@mui/material';
 import {
@@ -31,7 +29,6 @@ import DockingConfig from './components/DockingConfig';
 import PdbSearch from './components/PdbSearch';
 
 function App() {
-  const theme = useTheme();
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

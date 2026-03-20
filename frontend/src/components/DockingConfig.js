@@ -12,10 +12,8 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Avatar,
-  IconButton,
   Tooltip,
   alpha,
   Fade,
@@ -60,7 +58,7 @@ const DockingConfig = ({ proteinPath, activesite, darkMode }) => {
         z: activesite.z
       });
     }
-  }, [activesite]);
+  }, [activesite, hasActiveSite]);
 
   const canDock =
     proteinPath &&
