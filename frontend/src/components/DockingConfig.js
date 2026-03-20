@@ -33,6 +33,7 @@ import {
   FileDownload as FileDownloadIcon
 } from '@mui/icons-material';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../config/api';
 
 const DockingConfig = ({ proteinPath, activesite, darkMode }) => {
   const [ligandSmiles, setLigandSmiles] = useState('');
@@ -104,7 +105,7 @@ const DockingConfig = ({ proteinPath, activesite, darkMode }) => {
       };
 
       const response = await axios.post(
-        'http://localhost:8000/api/dock',
+        API_ENDPOINTS.dock,
         dockingData
       );
 
@@ -148,7 +149,7 @@ const DockingConfig = ({ proteinPath, activesite, darkMode }) => {
       console.log('Download button clicked - starting download process');
       
       // Download PDBQT file with all poses using axios
-      const response = await axios.get(`http://localhost:8000/api${results.download_urls?.all_poses}`, {
+      const response = await axios.get(API_ENDPOINTS.download(results.download_urls?.all_poses), {
         responseType: 'blob'
       });
       

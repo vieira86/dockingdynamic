@@ -27,6 +27,7 @@ import MolecularViewer from './components/MolecularViewer';
 import LigandInfo from './components/LigandInfo';
 import DockingConfig from './components/DockingConfig';
 import PdbSearch from './components/PdbSearch';
+import { API_ENDPOINTS } from './config/api';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -81,7 +82,7 @@ function App() {
       const formData = new FormData();
       formData.append('file', file);
       
-      const response = await axios.post('http://localhost:8000/api/upload-pdb', formData, {
+      const response = await axios.post(API_ENDPOINTS.uploadPDB, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -155,7 +156,7 @@ function App() {
       setPdbContent(null);
       setProteinData(null);
       
-      const response = await axios.get(`http://localhost:8000/api/fetch-pdb/${pdbId}`, {
+      const response = await axios.get(API_ENDPOINTS.fetchPDB(pdbId), {
         timeout: 30000
       });
 
