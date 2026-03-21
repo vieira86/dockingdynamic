@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Poetry
+poetry.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+clean_structures/
+downloaded_structures/
+uploaded_structures/
+*.pdb
+*.pdbqt
+*.sdf
+*.mol2
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+.env.production
